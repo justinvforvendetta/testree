@@ -259,12 +259,19 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
 // CTransaction and CTxIndex
 //
 
-bool CTransaction::ReadFromDisk(CTxDB& txdb, COutPoint prevout, CTxIndex& txindexRet)
+bool CTransaction::ReadFromDisk(CTxDB& txdb, const uint256& hash, CTxIndex& txindexRet)
 {
     SetNull();
-    if (!txdb.ReadTxIndex(prevout.hash, txindexRet))
+    if (!txdb.ReadTxIndex(hash, txindexRet))
         return false;
     if (!ReadFromDisk(txindexRet.pos))
+        return false;
+    return true;
+}
+
+bool CTransaction::ReadFromDisk(CTxDB& txdb, COutPoint prevout, CTxIndex& txindexRet)
+{
+    if (!ReadFromDisk(txdb, prevout.hash, txindexRet))
         return false;
     if (prevout.n >= vout.size())
     {
