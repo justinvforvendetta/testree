@@ -433,6 +433,7 @@ void BitcoinGUI::createToolBars()
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setOrientation(Qt::Vertical);
     toolbar->setMovable( false );
+    addToolBar(Qt::LeftToolBarArea, toolbar);
     toolbar->addAction(overviewAction);
     //graphpageaction
    //  toolbar->addAction(graphpageaction);
